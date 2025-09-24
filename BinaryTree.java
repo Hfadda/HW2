@@ -1,6 +1,6 @@
 
 /*
- * *** PLACE YOUR NAME / SECTION HERE ***
+ * *** Hannah Fadda/Section 002 ***
  *
  * Homework # 2 (Programming Assignment). This Java class defines a few basic
  * manipulation operations of a binary trees.
@@ -54,11 +54,12 @@ public class BinaryTree {
     public BinaryTree() {
         root = null;
     }
+
     public BinaryTree(Node node) {
         root = node;
     }
 
-    /* 
+    /*
      * Class Node
      *
      * The node object definition for each node of the bin ary tree.
@@ -178,7 +179,7 @@ public class BinaryTree {
      * which does the actual work. The public wrapper method simply passes the root
      * of the tree to helper method.
      */
-    
+
     public String preOrder() {
         return preOrderHelper(root);
     }
@@ -219,12 +220,18 @@ public class BinaryTree {
      * in very few lines of code.
      *
      */
-
     private void replaceValueHelper(Node node, int oldVal, int newVal) {
 
         // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
         // BINARY TREE (WHICH IS BASED ON RECURSION)
-
+        if (node == null) {
+            return;
+        }
+        if (node.data == oldVal) {
+            node.data = newVal;
+        }
+        replaceValueHelper(node.left, oldVal, newVal);
+        replaceValueHelper(node.right, oldVal, newVal);
     }
 
 
@@ -246,8 +253,20 @@ public class BinaryTree {
 
         // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
         // BINARY TREE (WHICH IS BASED ON RECURSION)
+        if (node == null) {
+            return Integer.MAX_VALUE;
+        }
+        int leftMin = findMinHelper(node.left);
+        int rightMin = findMinHelper(node.right);
+        int compareMin = node.data;
 
-        return Integer.MAX_VALUE;
+        if (leftMin < compareMin) {
+            compareMin = leftMin;
+        }
+        if (rightMin < compareMin) {
+            compareMin = rightMin;
+        }
+        return compareMin;
     }
 
 
@@ -270,9 +289,18 @@ public class BinaryTree {
         // BINARY TREE (WHICH IS BASED ON RECURSION)
 
         // RETURNING -1 IN THIS STUB, WHICH WILL FAIL ALL TESTS. REPLACE IT WITH YOUR CODE
+        if (node == null) {
+            return 0;
+        }
+        int count = 0;
+        if (node.data > val) {
+            count++;
+        }
+        count += nodesGTHelper(node.left, val);
+        count += nodesGTHelper(node.right, val);
 
+        return count;
 
-        return -1;
     }
 
 
@@ -311,6 +339,15 @@ public class BinaryTree {
         // COUNT LOCATIONS IN THE RETURNED ARRAY AS SHOWN BELOW, ELSE
         // THE 'SUM' IS RETURNED IN INDEX LOCATION 0, AND COUNT IS LOCATION 1
 
-        return new int[]{0, 0};
+        if (n == null) {
+            return new int[]{0, 0};
+        }
+        int[] left = averageHelper(n.left);
+        int[] right = averageHelper(n.right);
+
+        int sum = left[0] + right[0] + n.data;
+        int count = left[1] + right[1] + 1;
+
+        return new int[]{sum, count};
     }
 }
